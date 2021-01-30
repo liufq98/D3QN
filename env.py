@@ -40,9 +40,6 @@ class Env_VR():
         self.Buffer_L = self.Buffer_L.copy()
 
 
-
-
-
     def KNAP_SACK(self,Requested_Block_Num,True_Value):
         resArr = np.zeros((self.USER_NUM + 1, self.Resource_Block_NUM + 1))
         temp = np.array([0])
@@ -60,6 +57,15 @@ class Env_VR():
             if resArr[i][j] > resArr[i-1][j]:
                 winner[i-1] = True
                 j -= Requested_Block_Num[i]
+
+        loser_index = np.where(winner==0)
+        for i in loser_index:
+            temp_True_value = True_Value.copy()
+            temp_True_value[i] = 0
+            counter = np.where(temp_True_value == True_Value[i])
+            if (True_Value[i] in Requested_Block_Num[i]<Requested_Block_Num[counter]):
+                winner[i] = 1
+                winner[counter] = 0
         return winner
 
     #信道资源拍卖函数，得到最终的信道资源拍卖结果，用户的付款，以及最终的总的能达到的True_Value.

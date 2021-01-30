@@ -43,7 +43,7 @@ class D3QN(keras.Model):
     def loss_func(self, y_true, y_pred, weights=None):
         difference = y_true - y_pred
         abs_diff = tf.math.abs(difference)
-        abs_diff = tf.math.reduce_sum(abs_diff, axis=-1)
+        abs_diff = tf.math.reduce_mean(abs_diff, axis=-1)
 
         if weights is not None:
 
@@ -59,7 +59,7 @@ class D3QN(keras.Model):
             #print(loss)
             #loss = loss+self.losses
 
-        grads = tape.gradient(loss, self.trainable_variables)
+        grads = tape.gradient(loss, self.model.trainable_variables)
         self.opt.apply_gradients(zip(grads, self.model.trainable_variables))
         return loss
 
@@ -73,11 +73,11 @@ class Agent():####两个model，一个为eval 一个为target即next model
         self.batch_size=64
         self.epsilon=1.0
         self.gamma = 0.95
-        self.eps_dec = 0.0005
-        self.eps_min = 0.001
-        self.replace = 200###多少次更新一次next_model的值
+        self.eps_dec = 0.001
+        self.eps_min = 0.01
+        self.replace = 10###多少次更新一次next_model的值
         self.memory_size=10000
-        self.lr=1e-3
+        self.lr=0.0001
         self.opt = tf.keras.optimizers.Adam(lr=self.lr)
         self.eval_model=self.build_model()
         self.next_model=self.build_model()
@@ -122,6 +122,7 @@ class Agent():####两个model，一个为eval 一个为target即next model
         return estimate_reward
 
     def learn(self):
+        aver_sum=0
         for _ in range(5):
             obs, actions, rewards,estimate_rewards,utility, new_obs,new_actions, dones= self.memory.sample_buffer(self.batch_size)
 
@@ -146,11 +147,12 @@ class Agent():####两个model，一个为eval 一个为target即next model
             max_actions = np.argmax(self.q_eval.predict(np.reshape(new_obs,(self.batch_size,1,3,1,1))), axis=1)##DDQN
             for idx, terminal in enumerate(dones):
                 q_target[idx, actions[idx]] = utility[idx] + self.gamma*q_next[idx, max_actions[idx]]*(1-int(dones[idx]))#####DDRN的修改
-
-            loss1=self.q_eval.train_func(np.reshape(obs,(self.batch_size,1,3,1,1)), q_target, weights=None)
-
-            self.learn_step_counter += 1
-        return loss1
+            for _ in range(5):
+                loss1=self.q_eval.train_func(np.reshape(obs,(self.batch_size,1,3,1,1)), q_target, weights=None)
+            aver_sum+=loss1
+        self.learn_step_counter += 1
+        aver_loss=aver_sum/5
+        return aver_loss
     def save_model(self, model_name=None):
         if model_name is None:
             model_name = self.save_weight_name
