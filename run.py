@@ -10,9 +10,9 @@ config = ConfigProto()
 
 config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
-EPISODE_Length = 100
+EPISODE_Length = 500
 STEP_Lenght = 50
-memory_start=200
+memory_start=1000
 env = Env_VR()
 Agent1 = Agent(20,obs_shape=[3,])####Agent定义的相关参数
 Agent2 = Agent(20,obs_shape=[3,])#
@@ -122,10 +122,10 @@ for episode in range(EPISODE_Length):
 
 
 
-scipy.io.savemat('aver_utility', mdict={'aver_utility':np.array(aver_uti)})
-scipy.io.savemat('a1_loss', mdict={'a1_loss':np.array(a1_loss)})
-scipy.io.savemat('a2_loss', mdict={'a2_loss':np.array(a2_loss)})
-scipy.io.savemat('a3_loss', mdict={'a3_loss':np.array(a3_loss)})
-'''scipy.io.savemat('a1_reward', mdict={'a1_reward':np.array(a1_reward)})
-scipy.io.savemat('a2_reward', mdict={'a2_reward':np.array(a2_reward)})
-scipy.io.savemat('a3_reward', mdict={'a3_reward':np.array(a3_reward)})'''
+scipy.io.savemat('new_aver_utility,mat', mdict={'new_aver_utility':np.array(aver_uti)})
+scipy.io.savemat('new_a1_loss', mdict={'new_new_a1_loss':np.array(a1_loss)})
+scipy.io.savemat('new_a2_loss', mdict={'new_a2_loss':np.array(a2_loss)})
+scipy.io.savemat('new_a3_loss', mdict={'new_a3_loss':np.array(a3_loss)})
+'''scipy.io.savemat('a1_reward.mat', mdict={'a1_reward':np.array(a1_reward)})
+scipy.io.savemat('a2_reward.mat', mdict={'a2_reward':np.array(a2_reward)})
+scipy.io.savemat('a3_reward,mat', mdict={'a3_reward':np.array(a3_reward)})'''
