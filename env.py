@@ -24,9 +24,9 @@ class Env_VR():
         self.Buffer_L = np.zeros(self.USER_NUM)
         #这个需要自行设计
         #self.Prediction_Accuracy = np.ones(self.USER_NUM)
-        self.Prediction_Accuracy = np.array([0.7,0.8,0.9])
+        self.Prediction_Accuracy = np.array([0.8,0.8,0.8])
         #self.Prediction_StdDev =np.ones(self.USER_NUM)
-        self.Prediction_StdDev =np.array([0.05,0.08,0.1])
+        self.Prediction_StdDev =np.array([0.05,0.05,0.05])
         #执行backup操作
         self.Per_Block_Rate_BU = self.Per_Block_Rate.copy()
         self.User_Data_Rate_BU = self.User_Data_Rate.copy()
