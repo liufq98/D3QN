@@ -73,10 +73,10 @@ class Agent():####两个model，一个为eval 一个为target即next model
         self.batch_size=64
         self.epsilon=1.0
         self.gamma = 0.95
-        self.eps_dec = 0.001
+        self.eps_dec = 0.9995
         self.eps_min = 0.01
         self.replace = 10###多少次更新一次next_model的值
-        self.memory_size=10000
+        self.memory_size=5000
         self.lr=0.0001
         self.opt = tf.keras.optimizers.Adam(lr=self.lr)
         self.eval_model=self.build_model()
@@ -114,7 +114,7 @@ class Agent():####两个model，一个为eval 一个为target即next model
 
             action = np.squeeze(np.argmax(actions, axis=1))
 
-        self.epsilon = max(self.eps_min, self.epsilon - self.eps_dec)
+        self.epsilon = max(self.eps_min, self.epsilon * self.eps_dec)
 
         return action
     def estimate_reward(self,obs,action):

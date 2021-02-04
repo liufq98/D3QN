@@ -62,10 +62,12 @@ class Env_VR():
         for i in loser_index:
             temp_True_value = True_Value.copy()
             temp_True_value[i] = 0
-            counter = np.where(temp_True_value == True_Value[i])
-            if (True_Value[i] in Requested_Block_Num[i]<Requested_Block_Num[counter]):
-                winner[i] = 1
-                winner[counter] = 0
+            counter = np.where(temp_True_value == True_Value[i])[0]
+            if np.size(counter)>0:
+                counter = counter[0]
+                if (True_Value[i] in Requested_Block_Num[i]<Requested_Block_Num[counter]):
+                    winner[i-1] = 1
+                    winner[counter-1] = 0
         return winner
 
     #信道资源拍卖函数，得到最终的信道资源拍卖结果，用户的付款，以及最终的总的能达到的True_Value.
@@ -100,7 +102,7 @@ class Env_VR():
                 watch_reward[i] = (self.Buffer_H[i]+High_qual_tile_num_nowfetch)/self.Viewport_Tile_Size
             else:
                 watch_reward[i] = -1
-        watch_reward+=1
+        #watch_reward+=1
         #返回的是np.array格式的所有用户的观看reward。
         return watch_reward
 
@@ -172,7 +174,7 @@ class Env_VR():
                 return_watch_reward[i] = (self.Buffer_H[i] + High_qual_tile_num_nowfetch) / self.Viewport_Tile_Size
             else:
                 return_watch_reward[i] = -1
-        return_watch_reward += 1
+        #return_watch_reward += 1
         # 返回的是np.array格式的所有用户的观看reward。
         return return_watch_reward
 
