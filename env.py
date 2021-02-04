@@ -1,7 +1,7 @@
 import numpy as np
 
 class Env_VR():
-    def __init__(self, USER_NUM=3, Resource_Block_NUM=20):
+    def __init__(self, USER_NUM=3, Resource_Block_NUM=20,Prediction_Accuracy = np.array([0.8,0.8,0.8])):
         self.USER_NUM = USER_NUM
         print('Succ')
 
@@ -24,7 +24,7 @@ class Env_VR():
         self.Buffer_L = np.zeros(self.USER_NUM)
         #这个需要自行设计
         #self.Prediction_Accuracy = np.ones(self.USER_NUM)
-        self.Prediction_Accuracy = np.array([0.8,0.8,0.8])
+        self.Prediction_Accuracy = Prediction_Accuracy
         #self.Prediction_StdDev =np.ones(self.USER_NUM)
         self.Prediction_StdDev =np.array([0.05,0.05,0.05])
         #执行backup操作
