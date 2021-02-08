@@ -9,10 +9,10 @@ import scipy.io
 config = ConfigProto()
 
 config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
 EPISODE_Length = 500
 STEP_Lenght = 50
-memory_start=1000
+session = InteractiveSession(config=config)
+memory_start=5000
 env = Env_VR()
 Agent1 = Agent(20,obs_shape=[3,])####Agent定义的相关参数
 Agent2 = Agent(20,obs_shape=[3,])#
@@ -80,8 +80,8 @@ for episode in range(EPISODE_Length):
         sum_utility3+=utility[2]
 
         Agent1.store_transition(np.hstack((s_i[0],s_i[3],s_i[6])),action[0],reward[0],new_reward[0],utility[0],s_i_1,action1_,True)
-        Agent2.store_transition(np.hstack((s_i[1], s_i[4], s_i[7])), action[1], reward[1],new_reward[1],utility[1], s_i_2,action2_,True)
-        Agent3.store_transition(np.hstack((s_i[2], s_i[5], s_i[8])), action[2], reward[2], new_reward[2],utility[2],s_i_3,action3_,True)
+        Agent2.store_transition(np.hstack((s_i[1],s_i[4],s_i[7])), action[1], reward[1],new_reward[1],utility[1], s_i_2,action2_,True)
+        Agent3.store_transition(np.hstack((s_i[2],s_i[5],s_i[8])), action[2], reward[2], new_reward[2],utility[2],s_i_3,action3_,True)
         if (episode*STEP_Lenght+step+1)>memory_start:
             q_loss1=Agent1.learn()
             q_loss2=Agent2.learn()
@@ -111,6 +111,8 @@ for episode in range(EPISODE_Length):
        a2_loss.append(np.array(aver_loss2))
        a3_loss.append(np.array(aver_loss3))
        print('a1_loss:       ',a1_loss)
+       print('a2_loss:       ', a2_loss)
+       print('a3_loss:       ', a3_loss)
 
        '''aver_reward1=reward_sum1/STEP_Lenght
        aver_reward2=reward_sum2/STEP_Lenght
@@ -122,10 +124,10 @@ for episode in range(EPISODE_Length):
 
 
 
-scipy.io.savemat('new_aver_utility,mat', mdict={'new_aver_utility':np.array(aver_uti)})
-scipy.io.savemat('new_a1_loss', mdict={'new_new_a1_loss':np.array(a1_loss)})
-scipy.io.savemat('new_a2_loss', mdict={'new_a2_loss':np.array(a2_loss)})
-scipy.io.savemat('new_a3_loss', mdict={'new_a3_loss':np.array(a3_loss)})
+scipy.io.savemat('reward0_aver_utility.mat', mdict={'reward0_aver_utility':np.array(aver_uti)})
+scipy.io.savemat('reward0_a1_loss.mat', mdict={'reward0_a1_loss':np.array(a1_loss)})
+scipy.io.savemat('reward0_a2_loss.mat', mdict={'reward0_a2_loss':np.array(a2_loss)})
+scipy.io.savemat('reward0_a3_loss.mat', mdict={'reward0_a3_loss':np.array(a3_loss)})
 '''scipy.io.savemat('a1_reward.mat', mdict={'a1_reward':np.array(a1_reward)})
 scipy.io.savemat('a2_reward.mat', mdict={'a2_reward':np.array(a2_reward)})
-scipy.io.savemat('a3_reward,mat', mdict={'a3_reward':np.array(a3_reward)})'''
+scipy.io.savemat('a3_reward。mat', mdict={'a3_reward':np.array(a3_reward)})'''
